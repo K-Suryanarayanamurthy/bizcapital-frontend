@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import API from '../api/axios'
 
 function Register() {
@@ -6,6 +7,7 @@ function Register() {
         username: '',
         email: '',
         password: '',
+        confirmPassword: '',
         role: 'entrepreneur',
         phone: '',
         bio: ''
@@ -13,142 +15,216 @@ function Register() {
     const [error, setError] = useState('')
     const [success, setSuccess] = useState('')
     const [loading, setLoading] = useState(false)
+    const [showPassword, setShowPassword] = useState(false)
+    const navigate = useNavigate()
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
 
     const handleRegister = async () => {
+        if(!formData.username || !formData.email || !formData.password || !formData.role) {
+            setError('Please fill in all required fields!')
+            return
+        }
+        if(formData.password !== formData.confirmPassword) {
+            setError('Passwords do not match!')
+            return
+        }
+        if(formData.password.length < 6) {
+            setError('Password must be at least 6 characters!')
+            return
+        }
         setLoading(true)
         setError('')
-        setSuccess('')
         try {
             await API.post('/api/auth/register/', formData)
-            setSuccess('Registration successful! You can now login.')
+            setSuccess('Registration successful!')
+            setTimeout(() => navigate('/login'), 2000)
         } catch(err) {
-            setError('Registration failed! Please check your details.')
+            setError('Registration failed! Username or email already exists.')
         }
         setLoading(false)
     }
 
     return (
-        <div style={{
-            maxWidth: '400px',
-            margin: '50px auto',
-            padding: '30px',
-            border: '1px solid #ddd',
-            borderRadius: '10px',
-            boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
-        }}>
-            <h2 style={{ textAlign: 'center', color: '#1a56db' }}>
-                BizCapital Register
-            </h2>
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-10">
+            <div className="w-full max-w-md">
+                <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
 
-            {error && (
-                <p style={{
-                    background: '#f8d7da',
-                    color: '#721c24',
-                    padding: '10px',
-                    borderRadius: '6px'
-                }}>{error}</p>
-            )}
+                    {/* Logo */}
+                    <div className="text-center mb-8">
+                        <div className="w-12 h-12 bg-blue-700 rounded-xl flex items-center justify-center mx-auto mb-3">
+                            <span className="text-white font-bold text-xl">B</span>
+                        </div>
+                        <h2 className="text-2xl font-bold text-gray-800">
+                            Create Account
+                        </h2>
+                        <p className="text-gray-500 text-sm mt-1">
+                            Join BizCapital today
+                        </p>
+                    </div>
 
-            {success && (
-                <p style={{
-                    background: '#d4edda',
-                    color: '#155724',
-                    padding: '10px',
-                    borderRadius: '6px'
-                }}>{success}</p>
-            )}
+                    {/* Role Selector */}
+                    <div className="flex gap-3 mb-6">
+                        <button
+                            onClick={() => setFormData({...formData, role: 'entrepreneur'})}
+                            className={`flex-1 py-2.5 rounded-lg text-sm font-medium border transition duration-200 ${
+                                formData.role === 'entrepreneur'
+                                    ? 'bg-blue-700 text-white border-blue-700'
+                                    : 'bg-white text-gray-600 border-gray-300 hover:border-blue-700'
+                            }`}
+                        >
+                            🚀 Entrepreneur
+                        </button>
+                        <button
+                            onClick={() => setFormData({...formData, role: 'investor'})}
+                            className={`flex-1 py-2.5 rounded-lg text-sm font-medium border transition duration-200 ${
+                                formData.role === 'investor'
+                                    ? 'bg-blue-700 text-white border-blue-700'
+                                    : 'bg-white text-gray-600 border-gray-300 hover:border-blue-700'
+                            }`}
+                        >
+                            💼 Investor
+                        </button>
+                    </div>
 
-            <div style={{ marginBottom: '12px' }}>
-                <label>Username</label>
-                <input
-                    name="username"
-                    value={formData.username}
-                    onChange={handleChange}
-                    placeholder="Enter username"
-                    style={{ width: '100%', padding: '10px', marginTop: '5px', border: '1px solid #ddd', borderRadius: '6px', boxSizing: 'border-box' }}
-                />
+                    {/* Error */}
+                    {error && (
+                        <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg mb-4 text-sm">
+                            ⚠️ {error}
+                        </div>
+                    )}
+
+                    {/* Success */}
+                    {success && (
+                        <div className="bg-green-50 border border-green-200 text-green-600 px-4 py-3 rounded-lg mb-4 text-sm">
+                            ✅ {success} Redirecting to login...
+                        </div>
+                    )}
+
+                    {/* Username */}
+                    <div className="mb-4">
+                        <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                            Username <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                            name="username"
+                            value={formData.username}
+                            onChange={handleChange}
+                            placeholder="Enter username"
+                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+                        />
+                    </div>
+
+                    {/* Email */}
+                    <div className="mb-4">
+                        <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                            Email <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                            name="email"
+                            type="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            placeholder="Enter email"
+                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+                        />
+                    </div>
+
+                    {/* Password */}
+                    <div className="mb-4">
+                        <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                            Password <span className="text-red-500">*</span>
+                        </label>
+                        <div className="relative">
+                            <input
+                                name="password"
+                                type={showPassword ? 'text' : 'password'}
+                                value={formData.password}
+                                onChange={handleChange}
+                                placeholder="Enter password"
+                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 pr-12"
+                            />
+                            <button
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-sm"
+                            >
+                                {showPassword ? '🙈' : '👁️'}
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Confirm Password */}
+                    <div className="mb-4">
+                        <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                            Confirm Password <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                            name="confirmPassword"
+                            type="password"
+                            value={formData.confirmPassword}
+                            onChange={handleChange}
+                            placeholder="Confirm your password"
+                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+                        />
+                    </div>
+
+                    {/* Phone */}
+                    <div className="mb-4">
+                        <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                            Phone
+                        </label>
+                        <input
+                            name="phone"
+                            value={formData.phone}
+                            onChange={handleChange}
+                            placeholder="Enter phone number"
+                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+                        />
+                    </div>
+
+                    {/* Bio */}
+                    <div className="mb-6">
+                        <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                            Bio
+                        </label>
+                        <textarea
+                            name="bio"
+                            value={formData.bio}
+                            onChange={handleChange}
+                            placeholder="Tell us about yourself"
+                            rows={3}
+                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 resize-none"
+                        />
+                    </div>
+
+                    {/* Register Button */}
+                    <button
+                        onClick={handleRegister}
+                        disabled={loading}
+                        className="w-full bg-blue-700 text-white py-2.5 rounded-lg font-medium hover:bg-blue-800 transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        {loading ? (
+                            <span className="flex items-center justify-center gap-2">
+                                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                Creating account...
+                            </span>
+                        ) : 'Create Account'}
+                    </button>
+
+                    {/* Login Link */}
+                    <p className="text-center text-sm text-gray-500 mt-6">
+                        Already have an account?{' '}
+                        <span
+                            onClick={() => navigate('/login')}
+                            className="text-blue-700 font-medium cursor-pointer hover:underline"
+                        >
+                            Login here
+                        </span>
+                    </p>
+                </div>
             </div>
-
-            <div style={{ marginBottom: '12px' }}>
-                <label>Email</label>
-                <input
-                    name="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    placeholder="Enter email"
-                    style={{ width: '100%', padding: '10px', marginTop: '5px', border: '1px solid #ddd', borderRadius: '6px', boxSizing: 'border-box' }}
-                />
-            </div>
-
-            <div style={{ marginBottom: '12px' }}>
-                <label>Password</label>
-                <input
-                    name="password"
-                    type="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    placeholder="Enter password"
-                    style={{ width: '100%', padding: '10px', marginTop: '5px', border: '1px solid #ddd', borderRadius: '6px', boxSizing: 'border-box' }}
-                />
-            </div>
-
-            <div style={{ marginBottom: '12px' }}>
-                <label>Role</label>
-                <select
-                    name="role"
-                    value={formData.role}
-                    onChange={handleChange}
-                    style={{ width: '100%', padding: '10px', marginTop: '5px', border: '1px solid #ddd', borderRadius: '6px', boxSizing: 'border-box' }}
-                >
-                    <option value="entrepreneur">Entrepreneur</option>
-                    <option value="investor">Investor</option>
-                </select>
-            </div>
-
-            <div style={{ marginBottom: '12px' }}>
-                <label>Phone</label>
-                <input
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    placeholder="Enter phone number"
-                    style={{ width: '100%', padding: '10px', marginTop: '5px', border: '1px solid #ddd', borderRadius: '6px', boxSizing: 'border-box' }}
-                />
-            </div>
-
-            <div style={{ marginBottom: '15px' }}>
-                <label>Bio</label>
-                <textarea
-                    name="bio"
-                    value={formData.bio}
-                    onChange={handleChange}
-                    placeholder="Tell us about yourself"
-                    rows={3}
-                    style={{ width: '100%', padding: '10px', marginTop: '5px', border: '1px solid #ddd', borderRadius: '6px', boxSizing: 'border-box' }}
-                />
-            </div>
-
-            <button
-                onClick={handleRegister}
-                disabled={loading}
-                style={{
-                    width: '100%',
-                    padding: '12px',
-                    background: '#1a56db',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '6px',
-                    fontSize: '16px',
-                    cursor: 'pointer'
-                }}
-            >
-                {loading ? 'Registering...' : 'Register'}
-            </button>
         </div>
     )
 }

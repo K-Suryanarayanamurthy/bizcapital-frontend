@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import API from '../api/axios'
 
@@ -9,11 +9,10 @@ function Messaging() {
     const [content, setContent] = useState('')
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(true)
+    const messagesEndRef = useRef(null)
     const navigate = useNavigate()
     const role = localStorage.getItem('role')
     const username = localStorage.getItem('username')
-
-    // Determine which role to fetch
     const contactRole = role === 'investor' ? 'entrepreneur' : 'investor'
 
     useEffect(() => {
@@ -25,20 +24,23 @@ function Messaging() {
         fetchContacts()
     }, [])
 
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    }, [messages])
+
     const fetchContacts = async () => {
-    try {
-        const res = await API.get(`/api/auth/users/?role=${contactRole}`)
-        // Remove duplicates by id
-        const unique = res.data.filter(
-            (contact, index, self) =>
-                index === self.findIndex(c => c.id === contact.id)
-        )
-        setContacts(unique)
-        setLoading(false)
-    } catch(err) {
-        navigate('/login')
+        try {
+            const res = await API.get(`/api/auth/users/?role=${contactRole}`)
+            const unique = res.data.filter(
+                (contact, index, self) =>
+                    index === self.findIndex(c => c.id === contact.id)
+            )
+            setContacts(unique)
+            setLoading(false)
+        } catch(err) {
+            navigate('/login')
+        }
     }
-}
 
     const fetchConversation = async (contactId) => {
         try {
@@ -79,107 +81,89 @@ function Messaging() {
 
     if(loading) {
         return (
-            <div style={{ textAlign: 'center', marginTop: '100px' }}>
-                <h2>Loading messages...</h2>
+            <div className="flex items-center justify-center min-h-screen">
+                <div className="text-center">
+                    <div className="w-12 h-12 border-4 border-blue-700 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                    <p className="text-gray-500">Loading messages...</p>
+                </div>
             </div>
         )
     }
 
     return (
-        <div style={{
-            display: 'flex',
-            height: 'calc(100vh - 60px)',
-            fontFamily: 'Arial, sans-serif'
-        }}>
+        <div className="flex h-[calc(100vh-57px)] bg-gray-50">
 
-            {/* Left Side - Contacts List */}
-            <div style={{
-                width: '300px',
-                borderRight: '1px solid #ddd',
-                overflowY: 'auto',
-                background: '#f8f9fa'
-            }}>
-                <div style={{
-                    padding: '15px',
-                    background: '#1a56db',
-                    color: 'white'
-                }}>
-                    <h3 style={{ margin: 0 }}>
+            {/* Left Side - Contacts */}
+            <div className="w-80 bg-white border-r border-gray-200 flex flex-col">
+
+                {/* Contacts Header */}
+                <div className="px-4 py-4 border-b border-gray-200">
+                    <h2 className="text-lg font-bold text-gray-800">Messages</h2>
+                    <p className="text-xs text-gray-500 mt-0.5">
                         {contactRole === 'entrepreneur' ? '🚀 Entrepreneurs' : '💼 Investors'}
-                    </h3>
+                    </p>
                 </div>
 
-                {contacts.length === 0 && (
-                    <p style={{ padding: '20px', color: '#666' }}>
-                        No {contactRole}s found!
-                    </p>
-                )}
-
-                {contacts.map(contact => (
-                    <div
-                        key={contact.id}
-                        onClick={() => handleSelectContact(contact)}
-                        style={{
-                            padding: '15px',
-                            cursor: 'pointer',
-                            borderBottom: '1px solid #eee',
-                            background: selectedContact?.id === contact.id ? '#e8f0fe' : 'white',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '12px'
-                        }}
-                    >
-                        {/* Avatar */}
-                        <div style={{
-                            width: '45px',
-                            height: '45px',
-                            borderRadius: '50%',
-                            background: '#1a56db',
-                            color: 'white',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            fontSize: '18px',
-                            fontWeight: 'bold',
-                            flexShrink: 0
-                        }}>
-                            {contact.username[0].toUpperCase()}
-                        </div>
-
-                        {/* Contact Info */}
-                        <div>
-                            <p style={{ margin: 0, fontWeight: 'bold', color: '#1a1a1a' }}>
-                                {contact.username}
-                            </p>
-                            <p style={{ margin: 0, fontSize: '12px', color: '#888' }}>
-                                {contact.role}
+                {/* Contacts List */}
+                <div className="flex-1 overflow-y-auto">
+                    {contacts.length === 0 && (
+                        <div className="text-center py-10 px-4">
+                            <p className="text-3xl mb-2">👥</p>
+                            <p className="text-gray-500 text-sm">
+                                No {contactRole}s found!
                             </p>
                         </div>
-                    </div>
-                ))}
+                    )}
+
+                    {contacts.map(contact => (
+                        <div
+                            key={contact.id}
+                            onClick={() => handleSelectContact(contact)}
+                            className={`flex items-center gap-3 px-4 py-3 cursor-pointer border-b border-gray-100 transition duration-200 ${
+                                selectedContact?.id === contact.id
+                                    ? 'bg-blue-50 border-l-4 border-l-blue-700'
+                                    : 'hover:bg-gray-50'
+                            }`}
+                        >
+                            {/* Avatar */}
+                            <div className="w-11 h-11 bg-blue-700 rounded-full flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
+                                {contact.username[0].toUpperCase()}
+                            </div>
+
+                            {/* Info */}
+                            <div className="flex-1 min-w-0">
+                                <p className="font-medium text-gray-800 truncate">
+                                    {contact.username}
+                                </p>
+                                <p className="text-xs text-gray-400 capitalize">
+                                    {contact.role}
+                                </p>
+                            </div>
+
+                            {/* Arrow */}
+                            {selectedContact?.id === contact.id && (
+                                <span className="text-blue-700 text-sm">●</span>
+                            )}
+                        </div>
+                    ))}
+                </div>
             </div>
 
-            {/* Right Side - Chat Window */}
-            <div style={{
-                flex: 1,
-                display: 'flex',
-                flexDirection: 'column',
-                background: '#f0f4ff'
-            }}>
+            {/* Right Side - Chat */}
+            <div className="flex-1 flex flex-col">
 
-                {/* No contact selected */}
+                {/* No Contact Selected */}
                 {!selectedContact && (
-                    <div style={{
-                        flex: 1,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        flexDirection: 'column',
-                        color: '#888'
-                    }}>
-                        <p style={{ fontSize: '50px' }}>💬</p>
-                        <h3>Select a contact to start chatting!</h3>
-                        <p>Click on a name from the left panel</p>
+                    <div className="flex-1 flex flex-col items-center justify-center text-center px-6">
+                        <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center text-4xl mb-4">
+                            💬
+                        </div>
+                        <h3 className="text-xl font-bold text-gray-800 mb-2">
+                            Start a Conversation
+                        </h3>
+                        <p className="text-gray-500 text-sm max-w-xs">
+                            Select a contact from the left to start chatting with {contactRole}s
+                        </p>
                     </div>
                 )}
 
@@ -187,55 +171,34 @@ function Messaging() {
                 {selectedContact && (
                     <>
                         {/* Chat Header */}
-                        <div style={{
-                            padding: '15px 20px',
-                            background: '#1a56db',
-                            color: 'white',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '12px'
-                        }}>
-                            <div style={{
-                                width: '40px',
-                                height: '40px',
-                                borderRadius: '50%',
-                                background: 'white',
-                                color: '#1a56db',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                fontSize: '16px',
-                                fontWeight: 'bold'
-                            }}>
+                        <div className="bg-white border-b border-gray-200 px-6 py-4 flex items-center gap-3">
+                            <div className="w-10 h-10 bg-blue-700 rounded-full flex items-center justify-center text-white font-bold">
                                 {selectedContact.username[0].toUpperCase()}
                             </div>
                             <div>
-                                <p style={{ margin: 0, fontWeight: 'bold' }}>
+                                <p className="font-bold text-gray-800">
                                     {selectedContact.username}
                                 </p>
-                                <p style={{ margin: 0, fontSize: '12px', opacity: 0.8 }}>
+                                <p className="text-xs text-gray-400 capitalize">
                                     {selectedContact.role}
                                 </p>
                             </div>
+                            <button
+                                onClick={() => navigate('/messaging')}
+                                className="ml-auto text-gray-400 hover:text-gray-600 transition duration-200"
+                            >
+                                ✕
+                            </button>
                         </div>
 
-                        {/* Messages Area */}
-                        <div style={{
-                            flex: 1,
-                            overflowY: 'auto',
-                            padding: '20px',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: '10px'
-                        }}>
+                        {/* Messages */}
+                        <div className="flex-1 overflow-y-auto px-6 py-4 space-y-3">
                             {messages.length === 0 && (
-                                <div style={{
-                                    textAlign: 'center',
-                                    color: '#888',
-                                    marginTop: '50px'
-                                }}>
-                                    <p>No messages yet!</p>
-                                    <p>Say hello to {selectedContact.username} 👋</p>
+                                <div className="text-center py-10">
+                                    <p className="text-3xl mb-2">👋</p>
+                                    <p className="text-gray-500 text-sm">
+                                        No messages yet! Say hello to {selectedContact.username}
+                                    </p>
                                 </div>
                             )}
 
@@ -244,91 +207,72 @@ function Messaging() {
                                 return (
                                     <div
                                         key={message.id}
-                                        style={{
-                                            display: 'flex',
-                                            justifyContent: isMe ? 'flex-end' : 'flex-start'
-                                        }}
+                                        className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}
                                     >
-                                        <div style={{
-                                            maxWidth: '65%',
-                                            padding: '10px 15px',
-                                            borderRadius: isMe
-                                                ? '18px 18px 4px 18px'
-                                                : '18px 18px 18px 4px',
-                                            background: isMe ? '#1a56db' : 'white',
-                                            color: isMe ? 'white' : '#1a1a1a',
-                                            boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
-                                        }}>
-                                            <p style={{ margin: '0 0 5px 0' }}>
+                                        {/* Their Avatar */}
+                                        {!isMe && (
+                                            <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center text-white font-bold text-sm mr-2 flex-shrink-0 self-end">
+                                                {message.sender_name[0].toUpperCase()}
+                                            </div>
+                                        )}
+
+                                        <div className={`max-w-xs lg:max-w-md ${isMe ? 'items-end' : 'items-start'} flex flex-col`}>
+                                            <div className={`px-4 py-2.5 rounded-2xl text-sm ${
+                                                isMe
+                                                    ? 'bg-blue-700 text-white rounded-br-sm'
+                                                    : 'bg-white text-gray-800 border border-gray-200 rounded-bl-sm shadow-sm'
+                                            }`}>
                                                 {message.content}
-                                            </p>
-                                            <p style={{
-                                                margin: 0,
-                                                fontSize: '11px',
-                                                opacity: 0.7,
-                                                textAlign: 'right'
-                                            }}>
-                                                {new Date(message.created_at).toLocaleTimeString()}
+                                            </div>
+                                            <p className="text-xs text-gray-400 mt-1 px-1">
+                                                {new Date(message.created_at).toLocaleTimeString([], {
+                                                    hour: '2-digit',
+                                                    minute: '2-digit'
+                                                })}
                                             </p>
                                         </div>
+
+                                        {/* My Avatar */}
+                                        {isMe && (
+                                            <div className="w-8 h-8 bg-blue-700 rounded-full flex items-center justify-center text-white font-bold text-sm ml-2 flex-shrink-0 self-end">
+                                                {username[0].toUpperCase()}
+                                            </div>
+                                        )}
                                     </div>
                                 )
                             })}
+                            <div ref={messagesEndRef} />
                         </div>
 
                         {/* Error */}
                         {error && (
-                            <p style={{
-                                background: '#f8d7da',
-                                color: '#721c24',
-                                padding: '10px',
-                                margin: '0 20px'
-                            }}>{error}</p>
+                            <div className="mx-6 mb-2 bg-red-50 border border-red-200 text-red-600 px-4 py-2 rounded-lg text-sm">
+                                ⚠️ {error}
+                            </div>
                         )}
 
-                        {/* Message Input */}
-                        <div style={{
-                            padding: '15px 20px',
-                            background: 'white',
-                            borderTop: '1px solid #ddd',
-                            display: 'flex',
-                            gap: '10px',
-                            alignItems: 'center'
-                        }}>
-                            <textarea
-                                value={content}
-                                onChange={(e) => setContent(e.target.value)}
-                                onKeyPress={handleKeyPress}
-                                placeholder={`Message ${selectedContact.username}...`}
-                                rows={1}
-                                style={{
-                                    flex: 1,
-                                    padding: '12px',
-                                    border: '1px solid #ddd',
-                                    borderRadius: '25px',
-                                    resize: 'none',
-                                    outline: 'none',
-                                    fontSize: '14px'
-                                }}
-                            />
-                            <button
-                                onClick={handleSend}
-                                style={{
-                                    background: '#1a56db',
-                                    color: 'white',
-                                    border: 'none',
-                                    width: '45px',
-                                    height: '45px',
-                                    borderRadius: '50%',
-                                    cursor: 'pointer',
-                                    fontSize: '18px',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center'
-                                }}
-                            >
-                                ➤
-                            </button>
+                        {/* Input */}
+                        <div className="bg-white border-t border-gray-200 px-6 py-4">
+                            <div className="flex items-center gap-3">
+                                <textarea
+                                    value={content}
+                                    onChange={(e) => setContent(e.target.value)}
+                                    onKeyPress={handleKeyPress}
+                                    placeholder={`Message ${selectedContact.username}...`}
+                                    rows={1}
+                                    className="flex-1 px-4 py-2.5 border border-gray-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 resize-none"
+                                />
+                                <button
+                                    onClick={handleSend}
+                                    disabled={!content.trim()}
+                                    className="w-10 h-10 bg-blue-700 text-white rounded-full flex items-center justify-center hover:bg-blue-800 transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
+                                >
+                                    ➤
+                                </button>
+                            </div>
+                            <p className="text-xs text-gray-400 mt-2 text-center">
+                                Press Enter to send
+                            </p>
                         </div>
                     </>
                 )}

@@ -14,27 +14,24 @@ function CreateProposal() {
     const navigate = useNavigate()
     const role = localStorage.getItem('role')
 
-    // Only entrepreneurs can access this page
     if(role !== 'entrepreneur') {
         return (
-            <div style={{ textAlign: 'center', marginTop: '100px' }}>
-                <h2 style={{ color: 'red' }}>
-                    Access Denied!
-                </h2>
-                <p>Only entrepreneurs can create proposals.</p>
-                <button
-                    onClick={() => navigate('/proposals')}
-                    style={{
-                        background: '#1a56db',
-                        color: 'white',
-                        border: 'none',
-                        padding: '10px 20px',
-                        borderRadius: '6px',
-                        cursor: 'pointer'
-                    }}
-                >
-                    Browse Proposals
-                </button>
+            <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+                <div className="text-center">
+                    <p className="text-6xl mb-4">🚫</p>
+                    <h2 className="text-2xl font-bold text-gray-800 mb-2">
+                        Access Denied!
+                    </h2>
+                    <p className="text-gray-500 mb-6">
+                        Only entrepreneurs can create proposals.
+                    </p>
+                    <button
+                        onClick={() => navigate('/proposals')}
+                        className="bg-blue-700 text-white px-6 py-2.5 rounded-lg font-medium hover:bg-blue-800 transition duration-200"
+                    >
+                        Browse Proposals
+                    </button>
+                </div>
             </div>
         )
     }
@@ -44,153 +41,153 @@ function CreateProposal() {
     }
 
     const handleSubmit = async () => {
+        if(!formData.title || !formData.description || !formData.funding_needed) {
+            setError('Please fill in all required fields!')
+            return
+        }
         setLoading(true)
         setError('')
         try {
             await API.post('/api/proposals/create/', formData)
-            alert('Proposal created successfully!')
             navigate('/dashboard')
         } catch(err) {
-            setError('Failed to create proposal! Please check your details.')
+            setError('Failed to create proposal! Please try again.')
         }
         setLoading(false)
     }
 
+    const industries = [
+        { value: 'tech', label: '💻 Technology' },
+        { value: 'health', label: '🏥 Healthcare' },
+        { value: 'finance', label: '💰 Finance' },
+        { value: 'education', label: '📚 Education' },
+        { value: 'retail', label: '🛍️ Retail' },
+        { value: 'other', label: '🌐 Other' },
+    ]
+
     return (
-        <div style={{
-            maxWidth: '600px',
-            margin: '50px auto',
-            padding: '30px',
-            border: '1px solid #ddd',
-            borderRadius: '10px',
-            boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
-        }}>
-            <h2 style={{ color: '#1a56db', textAlign: 'center' }}>
-                Create Proposal
-            </h2>
+        <div className="min-h-screen bg-gray-50 py-10 px-4">
+            <div className="max-w-2xl mx-auto">
 
-            {error && (
-                <p style={{
-                    background: '#f8d7da',
-                    color: '#721c24',
-                    padding: '10px',
-                    borderRadius: '6px'
-                }}>{error}</p>
-            )}
+                {/* Header */}
+                <div className="mb-8">
+                    <button
+                        onClick={() => navigate('/dashboard')}
+                        className="text-gray-500 hover:text-gray-700 text-sm flex items-center gap-1 mb-4 transition duration-200"
+                    >
+                        ← Back to Dashboard
+                    </button>
+                    <h1 className="text-3xl font-bold text-gray-800">
+                        Create Proposal
+                    </h1>
+                    <p className="text-gray-500 mt-1">
+                        Share your business idea with investors
+                    </p>
+                </div>
 
-            <div style={{ marginBottom: '15px' }}>
-                <label>Title</label>
-                <input
-                    name="title"
-                    value={formData.title}
-                    onChange={handleChange}
-                    placeholder="Enter proposal title"
-                    style={{
-                        width: '100%',
-                        padding: '10px',
-                        marginTop: '5px',
-                        border: '1px solid #ddd',
-                        borderRadius: '6px',
-                        boxSizing: 'border-box'
-                    }}
-                />
+                {/* Form Card */}
+                <div className="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm">
+
+                    {error && (
+                        <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg mb-6 text-sm">
+                            ⚠️ {error}
+                        </div>
+                    )}
+
+                    {/* Title */}
+                    <div className="mb-5">
+                        <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                            Proposal Title <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                            name="title"
+                            value={formData.title}
+                            onChange={handleChange}
+                            placeholder="e.g. EcoTech Solar Solutions"
+                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+                        />
+                    </div>
+
+                    {/* Description */}
+                    <div className="mb-5">
+                        <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                            Description <span className="text-red-500">*</span>
+                        </label>
+                        <textarea
+                            name="description"
+                            value={formData.description}
+                            onChange={handleChange}
+                            placeholder="Describe your business idea, target market, and growth potential..."
+                            rows={5}
+                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 resize-none"
+                        />
+                    </div>
+
+                    {/* Industry */}
+                    <div className="mb-5">
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Industry <span className="text-red-500">*</span>
+                        </label>
+                        <div className="grid grid-cols-3 gap-2">
+                            {industries.map(ind => (
+                                <button
+                                    key={ind.value}
+                                    onClick={() => setFormData({...formData, industry: ind.value})}
+                                    className={`py-2.5 px-3 rounded-lg text-sm font-medium border transition duration-200 ${
+                                        formData.industry === ind.value
+                                            ? 'bg-blue-700 text-white border-blue-700'
+                                            : 'bg-white text-gray-600 border-gray-300 hover:border-blue-700'
+                                    }`}
+                                >
+                                    {ind.label}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Funding */}
+                    <div className="mb-8">
+                        <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                            Funding Needed ($) <span className="text-red-500">*</span>
+                        </label>
+                        <div className="relative">
+                            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-medium">
+                                $
+                            </span>
+                            <input
+                                name="funding_needed"
+                                type="number"
+                                value={formData.funding_needed}
+                                onChange={handleChange}
+                                placeholder="500000"
+                                className="w-full pl-8 pr-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+                            />
+                        </div>
+                    </div>
+
+                    {/* Buttons */}
+                    <div className="flex gap-3">
+                        <button
+                            onClick={() => navigate('/dashboard')}
+                            className="flex-1 border border-gray-300 text-gray-600 py-2.5 rounded-lg font-medium hover:bg-gray-50 transition duration-200"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            onClick={handleSubmit}
+                            disabled={loading}
+                            className="flex-1 bg-blue-700 text-white py-2.5 rounded-lg font-medium hover:bg-blue-800 transition duration-200 disabled:opacity-50"
+                        >
+                            {loading ? (
+                                <span className="flex items-center justify-center gap-2">
+                                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                    Creating...
+                                </span>
+                            ) : 'Create Proposal'}
+                        </button>
+                    </div>
+                </div>
             </div>
-
-            <div style={{ marginBottom: '15px' }}>
-                <label>Description</label>
-                <textarea
-                    name="description"
-                    value={formData.description}
-                    onChange={handleChange}
-                    placeholder="Describe your business idea"
-                    rows={4}
-                    style={{
-                        width: '100%',
-                        padding: '10px',
-                        marginTop: '5px',
-                        border: '1px solid #ddd',
-                        borderRadius: '6px',
-                        boxSizing: 'border-box'
-                    }}
-                />
-            </div>
-
-            <div style={{ marginBottom: '15px' }}>
-                <label>Industry</label>
-                <select
-                    name="industry"
-                    value={formData.industry}
-                    onChange={handleChange}
-                    style={{
-                        width: '100%',
-                        padding: '10px',
-                        marginTop: '5px',
-                        border: '1px solid #ddd',
-                        borderRadius: '6px',
-                        boxSizing: 'border-box'
-                    }}
-                >
-                    <option value="tech">Technology</option>
-                    <option value="health">Healthcare</option>
-                    <option value="finance">Finance</option>
-                    <option value="education">Education</option>
-                    <option value="retail">Retail</option>
-                    <option value="other">Other</option>
-                </select>
-            </div>
-
-            <div style={{ marginBottom: '20px' }}>
-                <label>Funding Needed ($)</label>
-                <input
-                    name="funding_needed"
-                    type="number"
-                    value={formData.funding_needed}
-                    onChange={handleChange}
-                    placeholder="Enter amount needed"
-                    style={{
-                        width: '100%',
-                        padding: '10px',
-                        marginTop: '5px',
-                        border: '1px solid #ddd',
-                        borderRadius: '6px',
-                        boxSizing: 'border-box'
-                    }}
-                />
-            </div>
-
-            <button
-                onClick={handleSubmit}
-                disabled={loading}
-                style={{
-                    width: '100%',
-                    padding: '12px',
-                    background: '#1a56db',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '6px',
-                    fontSize: '16px',
-                    cursor: 'pointer'
-                }}
-            >
-                {loading ? 'Creating...' : 'Create Proposal'}
-            </button>
-
-            <button
-                onClick={() => navigate('/dashboard')}
-                style={{
-                    width: '100%',
-                    padding: '12px',
-                    background: 'white',
-                    color: '#1a56db',
-                    border: '1px solid #1a56db',
-                    borderRadius: '6px',
-                    fontSize: '16px',
-                    cursor: 'pointer',
-                    marginTop: '10px'
-                }}
-            >
-                Cancel
-            </button>
         </div>
     )
 }
