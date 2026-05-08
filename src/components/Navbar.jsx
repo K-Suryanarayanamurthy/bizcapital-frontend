@@ -1,12 +1,14 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import API from '../api/axios'
 
 function Navbar() {
     const navigate = useNavigate()
     const location = useLocation()
-    const username = localStorage.getItem('username')
+    const username = localStorage.getItem('username')?.trim()
     const role = localStorage.getItem('role')
     const [menuOpen, setMenuOpen] = useState(false)
+    const [unreadCount, setUnreadCount] = useState(0)
 
     const handleLogout = () => {
         localStorage.removeItem('token')
@@ -16,6 +18,24 @@ function Navbar() {
     }
 
     const isActive = (path) => location.pathname === path
+
+    useEffect(() => {
+        const token = localStorage.getItem('token')
+        if(!token) return
+
+        const fetchUnreadCount = async () => {
+            try {
+                const res = await API.get('/api/messaging/unread-count/')
+                setUnreadCount(res.data.unread_count)
+            } catch(err) {
+                console.log(err)
+            }
+        }
+
+        fetchUnreadCount()
+        const interval = setInterval(fetchUnreadCount, 30000)
+        return () => clearInterval(interval)
+    }, [username])
 
     return (
         <nav className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
@@ -59,15 +79,22 @@ function Navbar() {
                             >
                                 Dashboard
                             </span>
+
+                            {/* Messages with notification badge */}
                             <span
                                 onClick={() => navigate('/messaging')}
-                                className={`cursor-pointer font-medium transition duration-200 pb-1 ${
+                                className={`cursor-pointer font-medium transition duration-200 pb-1 relative ${
                                     isActive('/messaging')
                                         ? 'text-blue-700 border-b-2 border-blue-700'
                                         : 'text-gray-600 hover:text-blue-700'
                                 }`}
                             >
                                 Messages
+                                {unreadCount > 0 && (
+                                    <span className="absolute -top-2 -right-3 bg-red-500 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center font-bold">
+                                        {unreadCount > 9 ? '9+' : unreadCount}
+                                    </span>
+                                )}
                             </span>
                         </>
                     )}
@@ -77,7 +104,6 @@ function Navbar() {
                 <div className="flex items-center gap-3">
                     {username ? (
                         <>
-                            {/* User Badge */}
                             <div className="hidden md:flex items-center gap-2 bg-blue-50 px-3 py-1.5 rounded-full">
                                 <div className="w-6 h-6 bg-blue-700 rounded-full flex items-center justify-center">
                                     <span className="text-white text-xs font-bold">

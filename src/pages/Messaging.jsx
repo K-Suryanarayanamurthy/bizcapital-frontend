@@ -12,7 +12,7 @@ function Messaging() {
     const messagesEndRef = useRef(null)
     const navigate = useNavigate()
     const role = localStorage.getItem('role')
-    const username = localStorage.getItem('username')
+    const username = localStorage.getItem('username')?.trim()
     const contactRole = role === 'investor' ? 'entrepreneur' : 'investor'
 
     useEffect(() => {
@@ -51,11 +51,17 @@ function Messaging() {
         }
     }
 
-    const handleSelectContact = (contact) => {
-        setSelectedContact(contact)
-        setError('')
-        fetchConversation(contact.id)
+const handleSelectContact = async (contact) => {
+    setSelectedContact(contact)
+    setError('')
+    fetchConversation(contact.id)
+    // Mark messages as read
+    try {
+        await API.post(`/api/messaging/mark-read/${contact.id}/`)
+    } catch(err) {
+        console.log(err)
     }
+}
 
     const handleSend = async () => {
         if(!content.trim()) return

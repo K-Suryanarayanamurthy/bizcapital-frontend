@@ -8,7 +8,7 @@ function Dashboard() {
     const [loading, setLoading] = useState(true)
     const navigate = useNavigate()
     const role = localStorage.getItem('role')
-    const username = localStorage.getItem('username')
+    const username = localStorage.getItem('username')?.trim()
 
     useEffect(() => {
         const token = localStorage.getItem('token')
