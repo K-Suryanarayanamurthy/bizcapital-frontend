@@ -9,6 +9,7 @@ import Home from './pages/Home'
 import EditProfile from './pages/EditProfile'
 import ProposalDetail from './pages/ProposalDetail'
 import Navbar from './components/Navbar'
+import Feedback from './pages/Feedback'
 
 function App() {
     return (
@@ -24,6 +25,7 @@ function App() {
                 <Route path="/create-proposal" element={<CreateProposal />} />
                 <Route path="/messaging" element={<Messaging />} />
                 <Route path="/edit-profile" element={<EditProfile />} />
+                <Route path="/feedback/:userId" element={<Feedback />} />
             </Routes>
         </BrowserRouter>
     )

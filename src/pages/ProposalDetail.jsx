@@ -248,6 +248,15 @@ function ProposalDetail() {
                         </div>
                     )}
                 </div>
+                {/* Give Feedback Button */}
+                {localStorage.getItem('token') && proposal.entrepreneur_name !== username && (
+                    <button
+                        onClick={() => navigate(`/feedback/${proposal.entrepreneur}`)}
+                        className="w-full mt-3 border border-blue-700 text-blue-700 py-3 rounded-xl font-bold hover:bg-blue-50 transition duration-200"
+                    >
+                        ⭐ Give Feedback
+                    </button>
+                )}
 
                 {/* Entrepreneur Profile Card */}
                 {entrepreneur && (

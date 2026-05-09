@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import API from '../api/axios'
 
 function Dashboard() {
+    const [averageRating, setAverageRating] = useState(0)
     const [profile, setProfile] = useState(null)
     const [proposals, setProposals] = useState([])
     const [loading, setLoading] = useState(true)
@@ -20,22 +21,26 @@ function Dashboard() {
     }, [])
 
     const fetchData = async () => {
-        try {
-            const profileRes = await API.get('/api/auth/profile/')
-            setProfile(profileRes.data)
+    try {
+        const profileRes = await API.get('/api/auth/profile/')
+        setProfile(profileRes.data)
 
-            if(role === 'entrepreneur') {
-                const proposalsRes = await API.get('/api/proposals/list/')
-                const myProposals = proposalsRes.data.filter(
-                    p => p.entrepreneur_name === username
-                )
-                setProposals(myProposals)
-            }
-            setLoading(false)
-        } catch(err) {
-            navigate('/login')
+        if(role === 'entrepreneur') {
+            const proposalsRes = await API.get('/api/proposals/list/')
+            const myProposals = proposalsRes.data.filter(
+                p => p.entrepreneur_name === username
+            )
+            setProposals(myProposals)
+
+            // Get feedback rating
+            const feedbackRes = await API.get(`/api/feedback/user/${profileRes.data.id}/`)
+            setAverageRating(feedbackRes.data.average_rating)
         }
+        setLoading(false)
+    } catch(err) {
+        navigate('/login')
     }
+}
 
     if(loading) {
         return (
@@ -132,8 +137,8 @@ function Dashboard() {
                         {/* Entrepreneur Section */}
                         {role === 'entrepreneur' && (
                             <div>
-                                {/* Stats */}
-                                <div className="grid grid-cols-2 gap-4 mb-6">
+                               {/* Stats */}
+                                <div className="grid grid-cols-3 gap-4 mb-6">
                                     <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm">
                                         <p className="text-3xl font-bold text-blue-700">
                                             {proposals.length}
@@ -148,6 +153,17 @@ function Dashboard() {
                                         </p>
                                         <p className="text-gray-500 text-sm mt-1">
                                             Open Proposals
+                                        </p>
+                                    </div>
+                                    <div
+                                        onClick={() => navigate(`/feedback/${profile.id}`)}
+                                        className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm cursor-pointer hover:border-blue-700 transition duration-200"
+                                    >
+                                        <p className="text-3xl font-bold text-yellow-500">
+                                            {averageRating > 0 ? `${averageRating}⭐` : '—'}
+                                        </p>
+                                        <p className="text-gray-500 text-sm mt-1">
+                                            My Rating
                                         </p>
                                     </div>
                                 </div>
