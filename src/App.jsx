@@ -6,6 +6,8 @@ import Dashboard from './pages/Dashboard'
 import CreateProposal from './pages/CreateProposal'
 import Messaging from './pages/Messaging'
 import Home from './pages/Home'
+import EditProfile from './pages/EditProfile'
+import ProposalDetail from './pages/ProposalDetail'
 import Navbar from './components/Navbar'
 
 function App() {
@@ -17,9 +19,11 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/proposals" element={<Proposals />} />
+                <Route path="/proposals/:id" element={<ProposalDetail />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/create-proposal" element={<CreateProposal />} />
                 <Route path="/messaging" element={<Messaging />} />
+                <Route path="/edit-profile" element={<EditProfile />} />
             </Routes>
         </BrowserRouter>
     )

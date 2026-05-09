@@ -88,10 +88,11 @@ function Proposals() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {filtered.map(proposal => (
-                        <div
-                            key={proposal.id}
-                            className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition duration-200 hover:-translate-y-1"
-                        >
+                <div
+                    key={proposal.id}
+                    onClick={() => navigate(`/proposals/${proposal.id}`)}
+                    className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition duration-200 hover:-translate-y-1 cursor-pointer"
+                >
                             {/* Top */}
                             <div className="flex items-start justify-between mb-4">
                                 <div className="w-12 h-12 bg-blue-700 rounded-xl flex items-center justify-center text-white font-bold text-lg">
