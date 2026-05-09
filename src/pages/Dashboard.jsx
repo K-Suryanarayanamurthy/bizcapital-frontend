@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom'
 import API from '../api/axios'
 
 function Dashboard() {
+    const [deleteModal, setDeleteModal] = useState(false)
+    const [deletingId, setDeletingId] = useState(null)
+    const [deleting, setDeleting] = useState(false)
     const [averageRating, setAverageRating] = useState(0)
     const [profile, setProfile] = useState(null)
     const [proposals, setProposals] = useState([])
@@ -52,6 +55,18 @@ function Dashboard() {
             </div>
         )
     }
+    const handleDeleteProposal = async () => {
+    setDeleting(true)
+    try {
+        await API.delete(`/api/proposals/${deletingId}/`)
+        setProposals(proposals.filter(p => p.id !== deletingId))
+        setDeleteModal(false)
+        setDeletingId(null)
+    } catch(err) {
+        alert('Failed to delete proposal!')
+    }
+    setDeleting(false)
+}
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -230,6 +245,10 @@ function Dashboard() {
                                                             Edit
                                                         </button>
                                                         <button
+                                                            onClick={() => {
+                                                                setDeletingId(proposal.id)
+                                                                setDeleteModal(true)
+                                                            }}
                                                             className="text-xs border border-red-200 text-red-500 px-3 py-1.5 rounded-lg hover:bg-red-50 transition duration-200"
                                                         >
                                                             Delete
@@ -291,6 +310,46 @@ function Dashboard() {
                     </div>
                 </div>
             </div>
+            {/* Delete Confirmation Modal */}
+            {deleteModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center px-4">
+                    <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl">
+                        <div className="text-center mb-4">
+                            <p className="text-4xl mb-3">🗑️</p>
+                            <h3 className="text-lg font-bold text-gray-800 mb-2">
+                                Delete Proposal?
+                            </h3>
+                            <p className="text-gray-500 text-sm">
+                                This action cannot be undone. Your proposal will be permanently deleted.
+                            </p>
+                        </div>
+                        <div className="flex gap-3 mt-6">
+                            <button
+                                onClick={() => {
+                                    setDeleteModal(false)
+                                    setDeletingId(null)
+                                }}
+                                disabled={deleting}
+                                className="flex-1 border border-gray-300 text-gray-600 py-2.5 rounded-lg font-medium hover:bg-gray-50 transition duration-200"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={handleDeleteProposal}
+                                disabled={deleting}
+                                className="flex-1 bg-red-500 text-white py-2.5 rounded-lg font-medium hover:bg-red-600 transition duration-200 disabled:opacity-50"
+                            >
+                                {deleting ? (
+                                    <span className="flex items-center justify-center gap-2">
+                                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                        Deleting...
+                                    </span>
+                                ) : 'Yes, Delete'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }

@@ -16,6 +16,8 @@ function EditProfile() {
     const [saving, setSaving] = useState(false)
     const [error, setError] = useState('')
     const [success, setSuccess] = useState('')
+    const [deleteModal, setDeleteModal] = useState(false)
+    const [deleting, setDeleting] = useState(false)
     const navigate = useNavigate()
     const username = localStorage.getItem('username')?.trim()
     const role = localStorage.getItem('role')
@@ -63,6 +65,20 @@ function EditProfile() {
             setError('Failed to update profile! Please try again.')
         }
         setSaving(false)
+    }
+
+    const handleDeleteAccount = async () => {
+        setDeleting(true)
+        try {
+            await API.delete('/api/auth/delete/')
+            localStorage.removeItem('token')
+            localStorage.removeItem('role')
+            localStorage.removeItem('username')
+            navigate('/')
+        } catch(err) {
+            alert('Failed to delete account! Please try again.')
+        }
+        setDeleting(false)
     }
 
     if(loading) {
@@ -120,7 +136,7 @@ function EditProfile() {
                         </div>
                     )}
 
-                    {/* Common Fields */}
+                    {/* Phone */}
                     <div className="mb-5">
                         <label className="block text-sm font-medium text-gray-700 mb-1.5">
                             📱 Phone Number
@@ -134,6 +150,7 @@ function EditProfile() {
                         />
                     </div>
 
+                    {/* Bio */}
                     <div className="mb-5">
                         <label className="block text-sm font-medium text-gray-700 mb-1.5">
                             📝 Bio
@@ -148,6 +165,7 @@ function EditProfile() {
                         />
                     </div>
 
+                    {/* LinkedIn */}
                     <div className="mb-5">
                         <label className="block text-sm font-medium text-gray-700 mb-1.5">
                             💼 LinkedIn Profile
@@ -173,7 +191,6 @@ function EditProfile() {
                                     Help entrepreneurs understand your investment preferences
                                 </p>
 
-                                {/* Investment Range */}
                                 <div className="grid grid-cols-2 gap-4 mb-5">
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-1.5">
@@ -209,7 +226,6 @@ function EditProfile() {
                                     </div>
                                 </div>
 
-                                {/* Investment Industries */}
                                 <div className="mb-5">
                                     <label className="block text-sm font-medium text-gray-700 mb-1.5">
                                         🏭 Industries of Interest
@@ -226,7 +242,6 @@ function EditProfile() {
                                     </p>
                                 </div>
 
-                                {/* Portfolio Companies */}
                                 <div className="mb-5">
                                     <label className="block text-sm font-medium text-gray-700 mb-1.5">
                                         📊 Portfolio Companies
@@ -240,9 +255,6 @@ function EditProfile() {
                                         rows={3}
                                         className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 resize-none"
                                     />
-                                    <p className="text-xs text-gray-400 mt-1">
-                                        List companies you have invested in
-                                    </p>
                                 </div>
                             </div>
                         </>
@@ -269,8 +281,63 @@ function EditProfile() {
                             ) : 'Save Changes'}
                         </button>
                     </div>
+
+                    {/* Danger Zone */}
+                    <div className="border-t border-red-100 pt-6 mt-6">
+                        <h3 className="text-sm font-bold text-red-500 uppercase tracking-wide mb-2">
+                            ⚠️ Danger Zone
+                        </h3>
+                        <p className="text-gray-500 text-sm mb-4">
+                            Once you delete your account all your data will be permanently removed.
+                        </p>
+                        <button
+                            onClick={() => setDeleteModal(true)}
+                            className="w-full border border-red-300 text-red-500 py-2.5 rounded-lg font-medium hover:bg-red-50 transition duration-200"
+                        >
+                            🗑️ Delete My Account
+                        </button>
+                    </div>
+
                 </div>
             </div>
+
+            {/* Delete Account Modal */}
+            {deleteModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center px-4">
+                    <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl">
+                        <div className="text-center mb-4">
+                            <p className="text-4xl mb-3">⚠️</p>
+                            <h3 className="text-lg font-bold text-gray-800 mb-2">
+                                Delete Account?
+                            </h3>
+                            <p className="text-gray-500 text-sm">
+                                This will permanently delete your account, all your proposals and messages. This cannot be undone!
+                            </p>
+                        </div>
+                        <div className="flex gap-3 mt-6">
+                            <button
+                                onClick={() => setDeleteModal(false)}
+                                disabled={deleting}
+                                className="flex-1 border border-gray-300 text-gray-600 py-2.5 rounded-lg font-medium hover:bg-gray-50 transition duration-200"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={handleDeleteAccount}
+                                disabled={deleting}
+                                className="flex-1 bg-red-500 text-white py-2.5 rounded-lg font-medium hover:bg-red-600 transition duration-200 disabled:opacity-50"
+                            >
+                                {deleting ? (
+                                    <span className="flex items-center justify-center gap-2">
+                                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                        Deleting...
+                                    </span>
+                                ) : 'Yes, Delete Account'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }
