@@ -228,6 +228,12 @@ const handleRegister = async () => {
                             placeholder="Confirm your password"
                             className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
                         />
+                        {formData.confirmPassword && formData.password !== formData.confirmPassword && (
+                            <p className="text-xs text-red-400 mt-1">❌ Passwords do not match!</p>
+                        )}
+                        {formData.confirmPassword && formData.password === formData.confirmPassword && (
+                            <p className="text-xs text-green-500 mt-1">✅ Passwords match!</p>
+                        )}
                     </div>
 
                     {/* Phone */}

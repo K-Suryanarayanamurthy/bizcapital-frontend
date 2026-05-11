@@ -4,6 +4,8 @@ import API from '../api/axios'
 
 function EditProfile() {
     const [formData, setFormData] = useState({
+        username: '',
+        email: '',
         phone: '',
         bio: '',
         linkedin_url: '',
@@ -35,6 +37,8 @@ function EditProfile() {
         try {
             const res = await API.get('/api/auth/profile/')
             setFormData({
+                username: res.data.username || '',
+                email: res.data.email || '',
                 phone: res.data.phone || '',
                 bio: res.data.bio || '',
                 linkedin_url: res.data.linkedin_url || '',
@@ -135,6 +139,35 @@ function EditProfile() {
                             ✅ {success}
                         </div>
                     )}
+
+                    {/* Username */}
+                    <div className="mb-5">
+                        <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                            👤 Username
+                        </label>
+                        <input
+                            name="username"
+                            value={formData.username}
+                            onChange={handleChange}
+                            placeholder="Enter username"
+                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+                        />
+                    </div>
+
+                    {/* Email */}
+                    <div className="mb-5">
+                        <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                            📧 Email Address
+                        </label>
+                        <input
+                            name="email"
+                            type="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            placeholder="Enter email address"
+                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+                        />
+                    </div>
 
                     {/* Phone */}
                     <div className="mb-5">
@@ -279,6 +312,21 @@ function EditProfile() {
                                     Saving...
                                 </span>
                             ) : 'Save Changes'}
+                        </button>
+                    </div>
+                    {/* Change Password */}
+                    <div className="border-t border-gray-100 pt-6 mt-6">
+                        <h3 className="text-sm font-bold text-gray-700 uppercase tracking-wide mb-2">
+                            🔒 Password
+                        </h3>
+                        <p className="text-gray-500 text-sm mb-4">
+                            Want to update your password?
+                        </p>
+                        <button
+                            onClick={() => navigate('/change-password')}
+                            className="w-full border border-blue-700 text-blue-700 py-2.5 rounded-lg font-medium hover:bg-blue-50 transition duration-200"
+                        >
+                            Change Password
                         </button>
                     </div>
 

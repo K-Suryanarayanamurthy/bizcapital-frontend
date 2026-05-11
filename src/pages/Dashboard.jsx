@@ -100,8 +100,8 @@ function Dashboard() {
 
                             <div className="space-y-3">
                                 <div>
-                                    <p className="text-xs text-gray-400 uppercase tracking-wide">Username</p>
-                                    <p className="text-gray-800 font-medium">{profile.username}</p>
+                                    <p className="text-xs text-gray-400 uppercase tracking-wide">Email</p>
+                                    <p className="text-gray-800 font-medium break-all text-sm">{profile.email}</p>
                                 </div>
                                 <div>
                                     <p className="text-xs text-gray-400 uppercase tracking-wide">Email</p>
