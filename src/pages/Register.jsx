@@ -22,30 +22,64 @@ function Register() {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
 
-    const handleRegister = async () => {
-        if(!formData.username || !formData.email || !formData.password || !formData.role) {
-            setError('Please fill in all required fields!')
-            return
-        }
-        if(formData.password !== formData.confirmPassword) {
-            setError('Passwords do not match!')
-            return
-        }
-        if(formData.password.length < 6) {
-            setError('Password must be at least 6 characters!')
-            return
-        }
-        setLoading(true)
-        setError('')
-        try {
-            await API.post('/api/auth/register/', formData)
-            setSuccess('Registration successful!')
-            setTimeout(() => navigate('/login'), 2000)
-        } catch(err) {
-            setError('Registration failed! Username or email already exists.')
-        }
-        setLoading(false)
+const validateEmail = (email) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+}
+
+const validatePhone = (phone) => {
+    if(!phone) return true // phone is optional
+    return /^[0-9]{10}$/.test(phone)
+}
+
+const validatePassword = (password) => {
+    const hasLetter = /[a-zA-Z]/.test(password)
+    const hasNumber = /[0-9]/.test(password)
+    const hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)
+    return password.length >= 6 && hasLetter && hasNumber && hasSpecial
+}
+
+const handleRegister = async () => {
+    // Check required fields
+    if(!formData.username || !formData.email || !formData.password || !formData.role) {
+        setError('Please fill in all required fields!')
+        return
     }
+
+    // Validate email format
+    if(!validateEmail(formData.email)) {
+        setError('Please enter a valid email address!')
+        return
+    }
+
+    // Validate phone format
+    if(!validatePhone(formData.phone)) {
+        setError('Phone number must be exactly 10 digits!')
+        return
+    }
+
+    // Validate password strength
+    if(!validatePassword(formData.password)) {
+        setError('Password must be at least 6 characters with letters, numbers and special characters!')
+        return
+    }
+
+    // Check passwords match
+    if(formData.password !== formData.confirmPassword) {
+        setError('Passwords do not match!')
+        return
+    }
+
+    setLoading(true)
+    setError('')
+    try {
+        await API.post('/api/auth/register/', formData)
+        setSuccess('Registration successful!')
+        setTimeout(() => navigate('/login'), 2000)
+    } catch(err) {
+        setError('Registration failed! Username or email already exists.')
+    }
+    setLoading(false)
+}
 
     return (
         <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-10">
@@ -154,6 +188,32 @@ function Register() {
                             </button>
                         </div>
                     </div>
+
+                    {/* Password Strength Indicator */}
+                        {formData.password && (
+                            <div className="mt-2 space-y-1">
+                                <div className="flex items-center gap-2">
+                                    <span className={`text-xs ${formData.password.length >= 6 ? 'text-green-500' : 'text-red-400'}`}>
+                                        {formData.password.length >= 6 ? '✅' : '❌'} Min 6 characters
+                                    </span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <span className={`text-xs ${/[a-zA-Z]/.test(formData.password) ? 'text-green-500' : 'text-red-400'}`}>
+                                        {/[a-zA-Z]/.test(formData.password) ? '✅' : '❌'} Contains letter
+                                    </span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <span className={`text-xs ${/[0-9]/.test(formData.password) ? 'text-green-500' : 'text-red-400'}`}>
+                                        {/[0-9]/.test(formData.password) ? '✅' : '❌'} Contains number
+                                    </span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <span className={`text-xs ${/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(formData.password) ? 'text-green-500' : 'text-red-400'}`}>
+                                        {/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(formData.password) ? '✅' : '❌'} Contains special character
+                                    </span>
+                                </div>
+                            </div>
+                        )}
 
                     {/* Confirm Password */}
                     <div className="mb-4">
