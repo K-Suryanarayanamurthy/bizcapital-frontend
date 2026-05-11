@@ -104,10 +104,6 @@ function Dashboard() {
                                     <p className="text-gray-800 font-medium break-all text-sm">{profile.email}</p>
                                 </div>
                                 <div>
-                                    <p className="text-xs text-gray-400 uppercase tracking-wide">Email</p>
-                                    <p className="text-gray-800 font-medium">{profile.email}</p>
-                                </div>
-                                <div>
                                     <p className="text-xs text-gray-400 uppercase tracking-wide">Role</p>
                                     <span className={`inline-block text-xs font-medium px-2.5 py-1 rounded-full ${
                                         role === 'entrepreneur'
