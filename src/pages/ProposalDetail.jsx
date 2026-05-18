@@ -53,36 +53,36 @@ function ProposalDetail() {
     }
 
     const industryColors = {
-        tech: 'bg-blue-100 text-blue-700',
-        health: 'bg-green-100 text-green-700',
-        finance: 'bg-yellow-100 text-yellow-700',
-        education: 'bg-purple-100 text-purple-700',
-        retail: 'bg-pink-100 text-pink-700',
-        other: 'bg-gray-100 text-gray-700',
+        tech: 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300',
+        health: 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300',
+        finance: 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300',
+        education: 'bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300',
+        retail: 'bg-pink-100 dark:bg-pink-900 text-pink-700 dark:text-pink-300',
+        other: 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300',
     }
 
     if(loading) {
         return (
-            <div className="flex items-center justify-center min-h-screen">
-                <div className="w-12 h-12 border-4 border-blue-700 border-t-transparent rounded-full animate-spin"></div>
+            <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900">
+                <div className="w-12 h-12 border-4 border-blue-700 dark:border-blue-400 border-t-transparent rounded-full animate-spin"></div>
             </div>
         )
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 py-10 px-4">
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-10 px-4">
             <div className="max-w-3xl mx-auto">
 
                 {/* Back Button */}
                 <button
                     onClick={() => navigate('/proposals')}
-                    className="text-gray-500 hover:text-gray-700 text-sm flex items-center gap-1 mb-6 transition duration-200"
+                    className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white text-sm flex items-center gap-1 mb-6 transition duration-200"
                 >
                     ← Back to Proposals
                 </button>
 
                 {/* Proposal Card */}
-                <div className="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm mb-6">
+                <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-8 shadow-sm mb-6">
 
                     {/* Header */}
                     <div className="flex items-start justify-between mb-6">
@@ -91,12 +91,12 @@ function ProposalDetail() {
                                 {proposal.title[0].toUpperCase()}
                             </div>
                             <div>
-                                <h1 className="text-2xl font-bold text-gray-800">
+                                <h1 className="text-2xl font-bold text-gray-800 dark:text-white">
                                     {proposal.title}
                                 </h1>
                                 <div className="flex items-center gap-2 mt-1">
                                     <span className={`text-xs font-medium px-2.5 py-1 rounded-full capitalize ${
-                                        industryColors[proposal.industry] || 'bg-gray-100 text-gray-700'
+                                        industryColors[proposal.industry] || 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
                                     }`}>
                                         {proposal.industry}
                                     </span>
@@ -114,55 +114,55 @@ function ProposalDetail() {
 
                     {/* Description */}
                     <div className="mb-6">
-                        <h2 className="text-sm font-medium text-gray-400 uppercase tracking-wide mb-2">
+                        <h2 className="text-sm font-medium text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-2">
                             About this Proposal
                         </h2>
-                        <p className="text-gray-700 leading-relaxed">
+                        <p className="text-gray-700 dark:text-gray-200 leading-relaxed">
                             {proposal.description}
                         </p>
                     </div>
 
                     {/* Funding */}
-                    <div className="bg-blue-50 rounded-xl p-4 mb-6">
-                        <p className="text-sm text-blue-600 font-medium mb-1">
+                    <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-4 mb-6">
+                        <p className="text-sm text-blue-600 dark:text-blue-300 font-medium mb-1">
                             Funding Required
                         </p>
-                        <p className="text-3xl font-bold text-blue-700">
+                        <p className="text-3xl font-bold text-blue-700 dark:text-blue-300">
                             ${Number(proposal.funding_needed).toLocaleString()}
                         </p>
                     </div>
 
                     {/* Details Grid */}
                     <div className="grid grid-cols-2 gap-4 mb-6">
-                        <div className="bg-gray-50 rounded-xl p-4">
-                            <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">
+                        <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4">
+                            <p className="text-xs text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-1">
                                 Industry
                             </p>
-                            <p className="font-medium text-gray-800 capitalize">
+                            <p className="font-medium text-gray-800 dark:text-gray-100 capitalize">
                                 {proposal.industry}
                             </p>
                         </div>
-                        <div className="bg-gray-50 rounded-xl p-4">
-                            <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">
+                        <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4">
+                            <p className="text-xs text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-1">
                                 Status
                             </p>
-                            <p className="font-medium text-gray-800 capitalize">
+                            <p className="font-medium text-gray-800 dark:text-gray-100 capitalize">
                                 {proposal.status}
                             </p>
                         </div>
-                        <div className="bg-gray-50 rounded-xl p-4">
-                            <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">
+                        <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4">
+                            <p className="text-xs text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-1">
                                 Posted By
                             </p>
-                            <p className="font-medium text-gray-800">
+                            <p className="font-medium text-gray-800 dark:text-gray-100">
                                 {proposal.entrepreneur_name}
                             </p>
                         </div>
-                        <div className="bg-gray-50 rounded-xl p-4">
-                            <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">
+                        <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4">
+                            <p className="text-xs text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-1">
                                 Posted On
                             </p>
-                            <p className="font-medium text-gray-800">
+                            <p className="font-medium text-gray-800 dark:text-gray-100">
                                 {new Date(proposal.created_at).toLocaleDateString()}
                             </p>
                         </div>
@@ -192,11 +192,11 @@ function ProposalDetail() {
 
                     {/* Revenue Milestone */}
                     {proposal.revenue_milestone && (
-                        <div className="bg-green-50 rounded-xl p-4 mb-4">
-                            <p className="text-xs text-green-600 uppercase tracking-wide mb-1 font-medium">
+                        <div className="bg-green-50 dark:bg-green-950 rounded-xl p-4 mb-4">
+                            <p className="text-xs text-green-600 dark:text-green-300 uppercase tracking-wide mb-1 font-medium">
                                 📈 Revenue / Growth
                             </p>
-                            <p className="font-medium text-green-800">
+                            <p className="font-medium text-green-800 dark:text-green-300">
                                 {proposal.revenue_milestone}
                             </p>
                         </div>
@@ -204,11 +204,11 @@ function ProposalDetail() {
 
                     {/* Achievements */}
                     {proposal.achievements && (
-                        <div className="bg-yellow-50 rounded-xl p-4 mb-6">
-                            <p className="text-xs text-yellow-600 uppercase tracking-wide mb-1 font-medium">
+                        <div className="bg-yellow-50 dark:bg-yellow-950 rounded-xl p-4 mb-6">
+                            <p className="text-xs text-yellow-600 dark:text-yellow-300 uppercase tracking-wide mb-1 font-medium">
                                 🏆 Achievements
                             </p>
-                            <p className="font-medium text-yellow-800">
+                            <p className="font-medium text-yellow-800 dark:text-yellow-300">
                                 {proposal.achievements}
                             </p>
                         </div>

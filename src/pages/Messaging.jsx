@@ -94,27 +94,27 @@ function Messaging() {
 
     if(loading) {
         return (
-            <div className="flex items-center justify-center min-h-screen">
+            <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900">
                 <div className="text-center">
-                    <div className="w-12 h-12 border-4 border-blue-700 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-                    <p className="text-gray-500">Loading messages...</p>
+                    <div className="w-12 h-12 border-4 border-blue-700 dark:border-blue-400 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                    <p className="text-gray-500 dark:text-gray-400">Loading messages...</p>
                 </div>
             </div>
         )
     }
 
     return (
-        <div className="flex h-[calc(100vh-57px)] bg-gray-50 overflow-hidden">
+        <div className="flex h-[calc(100vh-57px)] bg-gray-50 dark:bg-gray-900 overflow-hidden">
 
             {/* Left Side - Contacts */}
             <div className={`
                 ${showChat ? 'hidden' : 'flex'} md:flex
-                w-full md:w-80 bg-white border-r border-gray-200 flex-col flex-shrink-0
+                w-full md:w-80 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex-col flex-shrink-0
             `}>
                 {/* Contacts Header */}
-                <div className="px-4 py-4 border-b border-gray-200">
-                    <h2 className="text-lg font-bold text-gray-800">Messages</h2>
-                    <p className="text-xs text-gray-500 mt-0.5 flex items-center gap-1">
+                <div className="px-4 py-4 border-b border-gray-200 dark:border-gray-700">
+                    <h2 className="text-lg font-bold text-gray-800 dark:text-white">Messages</h2>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 flex items-center gap-1">
                         {contactRole === 'entrepreneur' ? '🚀' : '💼'}
                         {contactRole === 'entrepreneur' ? 'Entrepreneurs' : 'Investors'}
                     </p>
@@ -135,20 +135,20 @@ function Messaging() {
                         <div
                             key={contact.id}
                             onClick={() => handleSelectContact(contact)}
-                            className={`flex items-center gap-3 px-4 py-4 cursor-pointer border-b border-gray-100 transition duration-200 ${
+                            className={`flex items-center gap-3 px-4 py-4 cursor-pointer border-b border-gray-100 dark:border-gray-700 transition duration-200 ${
                                 selectedContact?.id === contact.id
-                                    ? 'bg-blue-50 border-l-4 border-l-blue-700'
-                                    : 'hover:bg-gray-50 active:bg-gray-100'
+                                    ? 'bg-blue-50 dark:bg-blue-950 border-l-4 border-l-blue-700 dark:border-l-blue-400'
+                                    : 'hover:bg-gray-50 dark:hover:bg-gray-700 active:bg-gray-100 dark:active:bg-gray-600'
                             }`}
                         >
                             <div className="w-12 h-12 bg-blue-700 rounded-full flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
                                 {contact.username[0].toUpperCase()}
                             </div>
                             <div className="flex-1 min-w-0">
-                                <p className="font-medium text-gray-800 truncate">
+                                <p className="font-medium text-gray-800 dark:text-gray-100 truncate">
                                     {contact.username}
                                 </p>
-                                <p className="text-xs text-gray-400 capitalize mt-0.5">
+                                <p className="text-xs text-gray-400 dark:text-gray-500 capitalize mt-0.5">
                                     {contact.role}
                                 </p>
                             </div>
@@ -166,14 +166,14 @@ function Messaging() {
 
                 {/* No Contact Selected - Desktop Only */}
                 {!selectedContact && (
-                    <div className="hidden md:flex flex-1 flex-col items-center justify-center text-center px-6">
-                        <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center text-4xl mb-4">
+                    <div className="hidden md:flex flex-1 flex-col items-center justify-center text-center px-6 bg-white dark:bg-gray-900">
+                        <div className="w-20 h-20 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center text-4xl mb-4">
                             💬
                         </div>
-                        <h3 className="text-xl font-bold text-gray-800 mb-2">
+                        <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-2">
                             Start a Conversation
                         </h3>
-                        <p className="text-gray-500 text-sm max-w-xs">
+                        <p className="text-gray-500 dark:text-gray-400 text-sm max-w-xs">
                             Select a contact from the left to start chatting
                         </p>
                     </div>
@@ -184,7 +184,7 @@ function Messaging() {
                     <div className="flex flex-col h-full">
 
                         {/* Chat Header */}
-                        <div className="bg-white border-b border-gray-200 px-4 py-3 flex items-center gap-3 flex-shrink-0">
+                        <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 py-3 flex items-center gap-3 flex-shrink-0">
                             {/* Back button - mobile only */}
                             <button
                                 onClick={handleBack}
@@ -197,17 +197,17 @@ function Messaging() {
                                 {selectedContact.username[0].toUpperCase()}
                             </div>
                             <div className="flex-1 min-w-0">
-                                <p className="font-bold text-gray-800 truncate">
+                                <p className="font-bold text-gray-800 dark:text-gray-100 truncate">
                                     {selectedContact.username}
                                 </p>
-                                <p className="text-xs text-gray-400 capitalize">
+                                <p className="text-xs text-gray-400 dark:text-gray-500 capitalize">
                                     {selectedContact.role}
                                 </p>
                             </div>
                         </div>
 
                         {/* Messages Area */}
-                        <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3 bg-gray-50">
+                        <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3 bg-gray-50 dark:bg-gray-900">
                             {messages.length === 0 && (
                                 <div className="flex flex-col items-center justify-center h-full text-center py-10">
                                     <p className="text-3xl mb-2">👋</p>
@@ -238,7 +238,7 @@ function Messaging() {
                                             }`}>
                                                 {message.content}
                                             </div>
-                                            <p className="text-xs text-gray-400 mt-1 px-1">
+                                            <p className="text-xs text-gray-400 dark:text-gray-500 mt-1 px-1">
                                                 {new Date(message.created_at).toLocaleTimeString([], {
                                                     hour: '2-digit',
                                                     minute: '2-digit'
@@ -259,13 +259,13 @@ function Messaging() {
 
                         {/* Error */}
                         {error && (
-                            <div className="mx-4 mb-2 bg-red-50 border border-red-200 text-red-600 px-4 py-2 rounded-lg text-sm flex-shrink-0">
+                            <div className="mx-4 mb-2 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 px-4 py-2 rounded-lg text-sm flex-shrink-0">
                                 ⚠️ {error}
                             </div>
                         )}
 
                         {/* Input Area */}
-                        <div className="bg-white border-t border-gray-200 px-4 py-3 flex-shrink-0">
+                        <div className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 px-4 py-3 flex-shrink-0">
                             <div className="flex items-center gap-2">
                                 <textarea
                                     value={content}
@@ -273,12 +273,12 @@ function Messaging() {
                                     onKeyPress={handleKeyPress}
                                     placeholder={`Message ${selectedContact.username}...`}
                                     rows={1}
-                                    className="flex-1 px-4 py-2.5 border border-gray-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 resize-none"
+                                    className="flex-1 px-4 py-2.5 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-full text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition duration-200 resize-none"
                                 />
                                 <button
                                     onClick={handleSend}
                                     disabled={!content.trim()}
-                                    className="w-10 h-10 bg-blue-700 text-white rounded-full flex items-center justify-center hover:bg-blue-800 transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
+                                    className="w-10 h-10 bg-blue-700 dark:bg-blue-600 text-white rounded-full flex items-center justify-center hover:bg-blue-800 dark:hover:bg-blue-700 transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
                                 >
                                     ➤
                                 </button>

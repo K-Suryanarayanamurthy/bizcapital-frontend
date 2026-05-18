@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import API from '../api/axios'
+import { useTheme } from '../context/ThemeContext'
 
 function Navbar() {
+    const { darkMode, toggleDarkMode } = useTheme()
     const navigate = useNavigate()
     const location = useLocation()
     const username = localStorage.getItem('username')?.trim()
@@ -45,8 +47,8 @@ function Navbar() {
 
     return (
         <>
-            <nav className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
-                <div className="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
+            <nav className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50 shadow-sm">
+                <div className="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between dark:bg-gray-900">
 
                     {/* Logo */}
                     <div
@@ -56,7 +58,7 @@ function Navbar() {
                         <div className="w-8 h-8 bg-blue-700 rounded-lg flex items-center justify-center">
                             <span className="text-white font-bold text-sm">B</span>
                         </div>
-                        <span className="text-xl font-bold text-blue-700">
+                        <span className="text-xl font-bold text-blue-700 dark:text-blue-400">
                             BizCapital
                         </span>
                     </div>
@@ -65,11 +67,11 @@ function Navbar() {
                     <div className="hidden md:flex items-center gap-6">
                         <span
                             onClick={() => handleNavigate('/proposals')}
-                            className={`cursor-pointer font-medium transition duration-200 pb-1 ${
-                                isActive('/proposals')
-                                    ? 'text-blue-700 border-b-2 border-blue-700'
-                                    : 'text-gray-600 hover:text-blue-700'
-                            }`}
+                                className={`cursor-pointer font-medium transition duration-200 pb-1 ${
+                                    isActive('/proposals')
+                                        ? 'text-blue-700 border-b-2 border-blue-700'
+                                        : 'text-gray-600 dark:text-gray-300 hover:text-blue-700'
+                                }`}
                         >
                             Proposals
                         </span>
@@ -81,7 +83,7 @@ function Navbar() {
                                     className={`cursor-pointer font-medium transition duration-200 pb-1 ${
                                         isActive('/dashboard')
                                             ? 'text-blue-700 border-b-2 border-blue-700'
-                                            : 'text-gray-600 hover:text-blue-700'
+                                            : 'text-gray-600 dark:text-gray-300 hover:text-blue-700'
                                     }`}
                                 >
                                     Dashboard
@@ -89,11 +91,11 @@ function Navbar() {
 
                                 <span
                                     onClick={() => handleNavigate('/messaging')}
-                                    className={`cursor-pointer font-medium transition duration-200 pb-1 relative ${
-                                        isActive('/messaging')
-                                            ? 'text-blue-700 border-b-2 border-blue-700'
-                                            : 'text-gray-600 hover:text-blue-700'
-                                    }`}
+                                        className={`cursor-pointer font-medium transition duration-200 pb-1 ${
+                                            isActive('/proposals')
+                                                ? 'text-blue-700 border-b-2 border-blue-700'
+                                                : 'text-gray-600 dark:text-gray-300 hover:text-blue-700'
+                                        }`}
                                 >
                                     Messages
                                     {unreadCount > 0 && (
@@ -107,6 +109,13 @@ function Navbar() {
                     </div>
 
                     {/* Right Side */}
+                    {/* Dark Mode Toggle */}
+                    <button
+                        onClick={toggleDarkMode}
+                        className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition duration-200"
+                    >
+                        {darkMode ? '☀️' : '🌙'}
+                    </button>
                     <div className="flex items-center gap-3">
                         {username ? (
                             <>

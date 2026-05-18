@@ -47,10 +47,10 @@ function Dashboard() {
 
     if(loading) {
         return (
-            <div className="flex items-center justify-center min-h-screen">
+            <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900">
                 <div className="text-center">
-                    <div className="w-12 h-12 border-4 border-blue-700 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-                    <p className="text-gray-500">Loading dashboard...</p>
+                    <div className="w-12 h-12 border-4 border-blue-700 dark:border-blue-400 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                    <p className="text-gray-500 dark:text-gray-400">Loading dashboard...</p>
                 </div>
             </div>
         )
@@ -69,19 +69,19 @@ function Dashboard() {
 }
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
 
             {/* Header */}
-            <div className="bg-white border-b border-gray-200 py-8 px-6">
+            <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 py-8 px-6">
                 <div className="max-w-5xl mx-auto flex items-center gap-4">
-                    <div className="w-16 h-16 bg-blue-700 rounded-2xl flex items-center justify-center text-white font-bold text-2xl">
+                    <div className="w-16 h-16 bg-blue-700 dark:bg-blue-600 rounded-2xl flex items-center justify-center text-white font-bold text-2xl">
                         {profile.username[0].toUpperCase()}
                     </div>
                     <div>
-                        <h1 className="text-2xl font-bold text-gray-800">
+                        <h1 className="text-2xl font-bold text-gray-800 dark:text-white">
                             Welcome back, {profile.username}! 👋
                         </h1>
-                        <p className="text-gray-500 text-sm mt-0.5">
+                        <p className="text-gray-500 dark:text-gray-400 text-sm mt-0.5">
                             {role === 'entrepreneur' ? '🚀 Entrepreneur' : '💼 Investor'} Account
                         </p>
                     </div>
@@ -93,41 +93,41 @@ function Dashboard() {
 
                     {/* Left Column - Profile */}
                     <div className="md:col-span-1">
-                        <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
-                            <h2 className="text-lg font-bold text-gray-800 mb-4">
+                        <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
+                            <h2 className="text-lg font-bold text-gray-800 dark:text-white mb-4">
                                 My Profile
                             </h2>
 
                             <div className="space-y-3">
                                 <div>
-                                    <p className="text-xs text-gray-400 uppercase tracking-wide">Email</p>
-                                    <p className="text-gray-800 font-medium break-all text-sm">{profile.email}</p>
+                                    <p className="text-xs text-gray-400 dark:text-gray-500 uppercase tracking-wide">Email</p>
+                                    <p className="text-gray-800 dark:text-gray-100 font-medium break-all text-sm">{profile.email}</p>
                                 </div>
                                 <div>
-                                    <p className="text-xs text-gray-400 uppercase tracking-wide">Role</p>
+                                    <p className="text-xs text-gray-400 dark:text-gray-500 uppercase tracking-wide">Role</p>
                                     <span className={`inline-block text-xs font-medium px-2.5 py-1 rounded-full ${
                                         role === 'entrepreneur'
-                                            ? 'bg-blue-100 text-blue-700'
-                                            : 'bg-green-100 text-green-700'
+                                            ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
+                                            : 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300'
                                     }`}>
                                         {profile.role}
                                     </span>
                                 </div>
                                 <div>
-                                    <p className="text-xs text-gray-400 uppercase tracking-wide">Phone</p>
-                                    <p className="text-gray-800 font-medium">
+                                    <p className="text-xs text-gray-400 dark:text-gray-500 uppercase tracking-wide">Phone</p>
+                                    <p className="text-gray-800 dark:text-gray-100 font-medium">
                                         {profile.phone || 'Not provided'}
                                     </p>
                                 </div>
                                 <div>
-                                    <p className="text-xs text-gray-400 uppercase tracking-wide">Bio</p>
-                                    <p className="text-gray-800 font-medium">
+                                    <p className="text-xs text-gray-400 dark:text-gray-500 uppercase tracking-wide">Bio</p>
+                                    <p className="text-gray-800 dark:text-gray-100 font-medium">
                                         {profile.bio || 'Not provided'}
                                     </p>
                                 </div>
                                 <div>
-                                    <p className="text-xs text-gray-400 uppercase tracking-wide">Joined</p>
-                                    <p className="text-gray-800 font-medium">
+                                    <p className="text-xs text-gray-400 dark:text-gray-500 uppercase tracking-wide">Joined</p>
+                                    <p className="text-gray-800 dark:text-gray-100 font-medium">
                                         {new Date(profile.date_joined).toLocaleDateString()}
                                     </p>
                                 </div>
@@ -135,7 +135,7 @@ function Dashboard() {
 
                             <button
                                 onClick={() => navigate('/edit-profile')}
-                                className="w-full mt-6 border border-blue-700 text-blue-700 py-2 rounded-lg text-sm font-medium hover:bg-blue-50 transition duration-200"
+                                className="w-full mt-6 border border-blue-700 dark:border-blue-400 text-blue-700 dark:text-blue-300 py-2 rounded-lg text-sm font-medium hover:bg-blue-50 dark:hover:bg-gray-700 transition duration-200"
                             >
                                 Edit Profile
                             </button>
@@ -150,44 +150,44 @@ function Dashboard() {
                             <div>
                                {/* Stats */}
                                 <div className="grid grid-cols-3 gap-4 mb-6">
-                                    <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm">
-                                        <p className="text-3xl font-bold text-blue-700">
+                                    <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-5 shadow-sm">
+                                        <p className="text-3xl font-bold text-blue-700 dark:text-blue-300">
                                             {proposals.length}
                                         </p>
-                                        <p className="text-gray-500 text-sm mt-1">
+                                        <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
                                             Total Proposals
                                         </p>
                                     </div>
-                                    <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm">
-                                        <p className="text-3xl font-bold text-green-600">
+                                    <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-5 shadow-sm">
+                                        <p className="text-3xl font-bold text-green-600 dark:text-green-400">
                                             {proposals.filter(p => p.status === 'open').length}
                                         </p>
-                                        <p className="text-gray-500 text-sm mt-1">
+                                        <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
                                             Open Proposals
                                         </p>
                                     </div>
                                     <div
                                         onClick={() => navigate(`/feedback/${profile.id}`)}
-                                        className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm cursor-pointer hover:border-blue-700 transition duration-200"
+                                        className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-5 shadow-sm cursor-pointer hover:border-blue-700 dark:hover:border-blue-400 transition duration-200"
                                     >
                                         <p className="text-3xl font-bold text-yellow-500">
                                             {averageRating > 0 ? `${averageRating}⭐` : '—'}
                                         </p>
-                                        <p className="text-gray-500 text-sm mt-1">
+                                        <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
                                             My Rating
                                         </p>
                                     </div>
                                 </div>
 
                                 {/* Proposals */}
-                                <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+                                <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
                                     <div className="flex items-center justify-between mb-4">
-                                        <h2 className="text-lg font-bold text-gray-800">
+                                        <h2 className="text-lg font-bold text-gray-800 dark:text-white">
                                             My Proposals
                                         </h2>
                                         <button
                                             onClick={() => navigate('/create-proposal')}
-                                            className="bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-800 transition duration-200"
+                                            className="bg-blue-700 dark:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-800 dark:hover:bg-blue-700 transition duration-200"
                                         >
                                             + New Proposal
                                         </button>
@@ -196,10 +196,10 @@ function Dashboard() {
                                     {proposals.length === 0 && (
                                         <div className="text-center py-10">
                                             <p className="text-4xl mb-3">📝</p>
-                                            <p className="text-gray-500">No proposals yet!</p>
+                                            <p className="text-gray-500 dark:text-gray-400">No proposals yet!</p>
                                             <button
                                                 onClick={() => navigate('/create-proposal')}
-                                                className="mt-3 text-blue-700 text-sm hover:underline"
+                                                className="mt-3 text-blue-700 dark:text-blue-300 text-sm hover:underline"
                                             >
                                                 Create your first proposal
                                             </button>
@@ -210,33 +210,33 @@ function Dashboard() {
                                         {proposals.map(proposal => (
                                             <div
                                                 key={proposal.id}
-                                                className="border border-gray-100 rounded-xl p-4 hover:border-blue-200 transition duration-200"
+                                                className="border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-900 rounded-xl p-4 hover:border-blue-200 dark:hover:border-blue-400 transition duration-200"
                                             >
                                                 <div className="flex items-start justify-between">
                                                     <div>
-                                                        <h3 className="font-bold text-gray-800">
+                                                        <h3 className="font-bold text-gray-800 dark:text-white">
                                                             {proposal.title}
                                                         </h3>
-                                                        <p className="text-gray-500 text-sm mt-1">
+                                                        <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
                                                             {proposal.description}
                                                         </p>
                                                     </div>
                                                     <span className={`text-xs font-medium px-2.5 py-1 rounded-full ml-3 ${
                                                         proposal.status === 'open'
-                                                            ? 'bg-green-100 text-green-700'
-                                                            : 'bg-red-100 text-red-700'
+                                                            ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300'
+                                                            : 'bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300'
                                                     }`}>
                                                         {proposal.status}
                                                     </span>
                                                 </div>
                                                 <div className="flex items-center justify-between mt-3">
-                                                    <span className="text-blue-700 font-bold text-sm">
+                                                    <span className="text-blue-700 dark:text-blue-300 font-bold text-sm">
                                                         ${Number(proposal.funding_needed).toLocaleString()}
                                                     </span>
                                                     <div className="flex gap-2">
                                                         <button
                                                             onClick={() => navigate(`/edit-proposal/${proposal.id}`)}
-                                                            className="text-xs border border-gray-300 text-gray-600 px-3 py-1.5 rounded-lg hover:border-blue-700 hover:text-blue-700 transition duration-200"
+                                                            className="text-xs border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 px-3 py-1.5 rounded-lg hover:border-blue-700 dark:hover:border-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition duration-200"
                                                         >
                                                             Edit
                                                         </button>
@@ -245,7 +245,7 @@ function Dashboard() {
                                                                 setDeletingId(proposal.id)
                                                                 setDeleteModal(true)
                                                             }}
-                                                            className="text-xs border border-red-200 text-red-500 px-3 py-1.5 rounded-lg hover:bg-red-50 transition duration-200"
+                                                            className="text-xs border border-red-200 dark:border-red-700 text-red-500 dark:text-red-300 px-3 py-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/30 transition duration-200"
                                                         >
                                                             Delete
                                                         </button>
@@ -265,36 +265,36 @@ function Dashboard() {
                                 <div className="grid grid-cols-2 gap-4">
                                     <div
                                         onClick={() => navigate('/proposals')}
-                                        className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm cursor-pointer hover:border-blue-700 hover:shadow-md transition duration-200"
+                                        className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm cursor-pointer hover:border-blue-700 dark:hover:border-blue-400 hover:shadow-md transition duration-200"
                                     >
                                         <p className="text-3xl mb-3">🔍</p>
-                                        <h3 className="font-bold text-gray-800">
+                                        <h3 className="font-bold text-gray-800 dark:text-white">
                                             Browse Proposals
                                         </h3>
-                                        <p className="text-gray-500 text-sm mt-1">
+                                        <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
                                             Discover investment opportunities
                                         </p>
                                     </div>
                                     <div
                                         onClick={() => navigate('/messaging')}
-                                        className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm cursor-pointer hover:border-blue-700 hover:shadow-md transition duration-200"
+                                        className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm cursor-pointer hover:border-blue-700 dark:hover:border-blue-400 hover:shadow-md transition duration-200"
                                     >
                                         <p className="text-3xl mb-3">💬</p>
-                                        <h3 className="font-bold text-gray-800">
+                                        <h3 className="font-bold text-gray-800 dark:text-white">
                                             Messages
                                         </h3>
-                                        <p className="text-gray-500 text-sm mt-1">
+                                        <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
                                             Chat with entrepreneurs
                                         </p>
                                     </div>
                                 </div>
 
                                 {/* Tips */}
-                                <div className="bg-blue-50 rounded-2xl border border-blue-100 p-6">
-                                    <h3 className="font-bold text-blue-800 mb-3">
+                                <div className="bg-blue-50 dark:bg-blue-950 rounded-2xl border border-blue-100 dark:border-blue-900 p-6">
+                                    <h3 className="font-bold text-blue-800 dark:text-blue-300 mb-3">
                                         💡 Investor Tips
                                     </h3>
-                                    <ul className="space-y-2 text-sm text-blue-700">
+                                    <ul className="space-y-2 text-sm text-blue-700 dark:text-blue-200">
                                         <li>• Browse proposals and filter by industry</li>
                                         <li>• Message entrepreneurs directly</li>
                                         <li>• Leave feedback after interactions</li>
@@ -309,13 +309,13 @@ function Dashboard() {
             {/* Delete Confirmation Modal */}
             {deleteModal && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center px-4">
-                    <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl">
+                    <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 max-w-sm w-full shadow-xl border border-gray-200 dark:border-gray-700">
                         <div className="text-center mb-4">
                             <p className="text-4xl mb-3">🗑️</p>
-                            <h3 className="text-lg font-bold text-gray-800 mb-2">
+                            <h3 className="text-lg font-bold text-gray-800 dark:text-white mb-2">
                                 Delete Proposal?
                             </h3>
-                            <p className="text-gray-500 text-sm">
+                            <p className="text-gray-500 dark:text-gray-400 text-sm">
                                 This action cannot be undone. Your proposal will be permanently deleted.
                             </p>
                         </div>
@@ -326,7 +326,7 @@ function Dashboard() {
                                     setDeletingId(null)
                                 }}
                                 disabled={deleting}
-                                className="flex-1 border border-gray-300 text-gray-600 py-2.5 rounded-lg font-medium hover:bg-gray-50 transition duration-200"
+                                className="flex-1 border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-200 py-2.5 rounded-lg font-medium hover:bg-gray-50 dark:hover:bg-gray-800 transition duration-200"
                             >
                                 Cancel
                             </button>

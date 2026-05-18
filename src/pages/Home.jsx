@@ -4,28 +4,28 @@ function Home() {
     const navigate = useNavigate()
 
     return (
-        <div className="min-h-screen bg-white">
+        <div className="min-h-screen bg-white dark:bg-gray-900">
 
             {/* Hero Section */}
-            <section className="bg-gradient-to-br from-blue-700 to-blue-500 text-white py-24 px-6">
+            <section className="bg-gradient-to-br from-blue-700 to-blue-500 dark:from-blue-800 dark:to-blue-600 text-white py-24 px-6">
                 <div className="max-w-4xl mx-auto text-center">
                     <h1 className="text-5xl font-bold mb-6 leading-tight">
                         Bridge Between Investor and Entrepreneur
                     </h1>
-                    <p className="text-xl text-blue-100 mb-10 max-w-2xl mx-auto">
+                    <p className="text-xl text-blue-100 dark:text-blue-200 mb-10 max-w-2xl mx-auto">
                         BizCapital connects visionary entrepreneurs with strategic investors.
                         Build your future with the right partners by your side.
                     </p>
                     <div className="flex gap-4 justify-center flex-wrap">
                         <button
                             onClick={() => navigate('/register')}
-                            className="bg-white text-blue-700 font-bold px-8 py-3 rounded-lg hover:bg-blue-50 transition duration-200"
+                            className="bg-white dark:bg-gray-800 text-blue-700 dark:text-blue-300 font-bold px-8 py-3 rounded-lg hover:bg-blue-50 dark:hover:bg-gray-700 transition duration-200"
                         >
                             Get Started
                         </button>
                         <button
                             onClick={() => navigate('/proposals')}
-                            className="border-2 border-white text-white font-bold px-8 py-3 rounded-lg hover:bg-blue-600 transition duration-200"
+                            className="border-2 border-white text-white font-bold px-8 py-3 rounded-lg hover:bg-blue-600 dark:hover:bg-blue-700 transition duration-200"
                         >
                             Browse Proposals
                         </button>
@@ -34,27 +34,27 @@ function Home() {
             </section>
 
             {/* Stats Section */}
-            <section className="bg-blue-50 py-12 px-6">
+            <section className="bg-blue-50 dark:bg-gray-800 py-12 px-6">
                 <div className="max-w-4xl mx-auto grid grid-cols-3 gap-6 text-center">
                     <div>
-                        <h3 className="text-4xl font-bold text-blue-700">500+</h3>
-                        <p className="text-gray-600 mt-1">Entrepreneurs</p>
+                        <h3 className="text-4xl font-bold text-blue-700 dark:text-blue-400">500+</h3>
+                        <p className="text-gray-600 dark:text-gray-300 mt-1">Entrepreneurs</p>
                     </div>
                     <div>
-                        <h3 className="text-4xl font-bold text-blue-700">200+</h3>
-                        <p className="text-gray-600 mt-1">Investors</p>
+                        <h3 className="text-4xl font-bold text-blue-700 dark:text-blue-400">200+</h3>
+                        <p className="text-gray-600 dark:text-gray-300 mt-1">Investors</p>
                     </div>
                     <div>
-                        <h3 className="text-4xl font-bold text-blue-700">$10M+</h3>
-                        <p className="text-gray-600 mt-1">Funded</p>
+                        <h3 className="text-4xl font-bold text-blue-700 dark:text-blue-400">$10M+</h3>
+                        <p className="text-gray-600 dark:text-gray-300 mt-1">Funded</p>
                     </div>
                 </div>
             </section>
 
             {/* Features Section */}
-            <section className="py-20 px-6">
+            <section className="py-20 px-6 bg-white dark:bg-gray-900">
                 <div className="max-w-5xl mx-auto">
-                    <h2 className="text-3xl font-bold text-center text-gray-800 mb-4">
+                    <h2 className="text-3xl font-bold text-center text-gray-800 dark:text-white mb-4">
                         Why Choose BizCapital?
                     </h2>
                     <p className="text-center text-gray-500 mb-12">
@@ -62,9 +62,9 @@ function Home() {
                     </p>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <div className="bg-white border border-gray-100 rounded-xl p-6 shadow-sm hover:shadow-md transition duration-200">
-                            <div className="text-4xl mb-4">🔒</div>
-                            <h3 className="text-xl font-bold text-gray-800 mb-2">
+                    <div className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl p-6 shadow-sm hover:shadow-md transition duration-200">
+                        <div className="text-4xl mb-4">🔒</div>
+                        <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-2">
                                 Verified Users
                             </h3>
                             <p className="text-gray-500">
@@ -72,12 +72,12 @@ function Home() {
                             </p>
                         </div>
 
-                        <div className="bg-white border border-gray-100 rounded-xl p-6 shadow-sm hover:shadow-md transition duration-200">
+                        <div className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl p-6 shadow-sm hover:shadow-md transition duration-200">
                             <div className="text-4xl mb-4">💬</div>
-                            <h3 className="text-xl font-bold text-gray-800 mb-2">
+                            <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-2">
                                 Direct Messaging
                             </h3>
-                            <p className="text-gray-500">
+                            <p className="text-gray-500 dark:text-gray-400">
                                 Chat directly with investors or entrepreneurs in real time.
                             </p>
                         </div>
@@ -126,12 +126,12 @@ function Home() {
             </section>
 
             {/* How It Works Section */}
-            <section className="bg-blue-50 py-20 px-6">
+            <section className="bg-blue-50 dark:bg-gray-800 py-20 px-6">
                 <div className="max-w-4xl mx-auto">
-                    <h2 className="text-3xl font-bold text-center text-gray-800 mb-4">
+                    <h2 className="text-3xl font-bold text-center text-gray-800 dark:text-white mb-4">
                         How It Works
                     </h2>
-                    <p className="text-center text-gray-500 mb-12">
+                    <p className="text-center text-gray-500 dark:text-gray-400 mb-12">
                         Get started in 4 simple steps
                     </p>
 
@@ -146,8 +146,8 @@ function Home() {
                                 <div className="w-14 h-14 bg-blue-700 text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">
                                     {item.step}
                                 </div>
-                                <h3 className="font-bold text-gray-800 mb-2">{item.title}</h3>
-                                <p className="text-gray-500 text-sm">{item.desc}</p>
+                                <h3 className="font-bold text-gray-800 dark:text-white mb-2">{item.title}</h3>
+                                <p className="text-gray-500 dark:text-gray-400 text-sm">{item.desc}</p>
                             </div>
                         ))}
                     </div>
@@ -155,12 +155,12 @@ function Home() {
             </section>
 
             {/* CTA Section */}
-            <section className="py-20 px-6 text-center">
+            <section className="py-20 px-6 text-center bg-white dark:bg-gray-900">
                 <div className="max-w-2xl mx-auto">
-                    <h2 className="text-3xl font-bold text-gray-800 mb-4">
+                    <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-4">
                         Ready to Get Started?
                     </h2>
-                    <p className="text-gray-500 mb-8">
+                    <p className="text-gray-500 dark:text-gray-400 mb-8">
                         Join thousands of entrepreneurs and investors building the future together.
                     </p>
                     <div className="flex gap-4 justify-center flex-wrap">

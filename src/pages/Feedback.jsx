@@ -87,39 +87,39 @@ function Feedback() {
 
     if(loading) {
         return (
-            <div className="flex items-center justify-center min-h-screen">
-                <div className="w-12 h-12 border-4 border-blue-700 border-t-transparent rounded-full animate-spin"></div>
+            <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900">
+                <div className="w-12 h-12 border-4 border-blue-700 dark:border-blue-400 border-t-transparent rounded-full animate-spin"></div>
             </div>
         )
     }
     const isOwnProfile = userInfo?.username === currentUsername 
     return (
-        <div className="min-h-screen bg-gray-50 py-10 px-4">
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-10 px-4">
             <div className="max-w-2xl mx-auto">
 
                 {/* Back Button */}
                 <button
                     onClick={() => navigate(-1)}
-                    className="text-gray-500 hover:text-gray-700 text-sm flex items-center gap-1 mb-6 transition duration-200"
+                    className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white text-sm flex items-center gap-1 mb-6 transition duration-200"
                 >
                     ← Go Back
                 </button>
 
                 {/* User Info Card */}
-                <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm mb-6">
+                <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm mb-6">
                     <div className="flex items-center gap-4 mb-4">
                         <div className="w-16 h-16 bg-blue-700 rounded-full flex items-center justify-center text-white font-bold text-2xl">
                             {userInfo?.username[0].toUpperCase()}
                         </div>
                         <div>
-                            <h2 className="text-xl font-bold text-gray-800">
+                            <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100">
                                 {userInfo?.username}
                             </h2>
                             <div className="flex items-center gap-2 mt-1">
                                 <div className="flex">
                                     {renderStars(Math.round(userInfo?.average_rating))}
                                 </div>
-                                <span className="text-gray-500 text-sm">
+                                <span className="text-gray-500 dark:text-gray-400 text-sm">
                                     {userInfo?.average_rating} ({userInfo?.total_reviews} reviews)
                                 </span>
                             </div>
@@ -129,26 +129,26 @@ function Feedback() {
 
                 {/* Give Feedback */}
                 {!alreadyReviewed && !isOwnProfile ? (
-                    <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm mb-6">
-                        <h3 className="text-lg font-bold text-gray-800 mb-4">
+                    <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm mb-6">
+                        <h3 className="text-lg font-bold text-gray-800 dark:text-white mb-4">
                             ✍️ Write a Review
                         </h3>
 
                         {error && (
-                            <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg mb-4 text-sm">
+                            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 px-4 py-3 rounded-lg mb-4 text-sm">
                                 ⚠️ {error}
                             </div>
                         )}
 
                         {success && (
-                            <div className="bg-green-50 border border-green-200 text-green-600 px-4 py-3 rounded-lg mb-4 text-sm">
+                            <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700 text-green-600 dark:text-green-300 px-4 py-3 rounded-lg mb-4 text-sm">
                                 ✅ {success}
                             </div>
                         )}
 
                         {/* Star Rating */}
                         <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
                                 Rating <span className="text-red-500">*</span>
                             </label>
                             <div className="flex gap-1">
@@ -163,16 +163,16 @@ function Feedback() {
 
                         {/* Comment */}
                         <div className="mb-5">
-                            <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1.5">
                                 Comment
-                                <span className="text-gray-400 font-normal ml-1">(optional)</span>
+                                <span className="text-gray-400 dark:text-gray-500 font-normal ml-1">(optional)</span>
                             </label>
                             <textarea
                                 value={comment}
                                 onChange={(e) => setComment(e.target.value)}
                                 placeholder="Share your experience..."
                                 rows={4}
-                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 resize-none"
+                                className="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-lg text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition duration-200 resize-none"
                             />
                         </div>
 
@@ -190,24 +190,24 @@ function Feedback() {
                         </button>
                     </div>
                 ) : (
-                    <div className="bg-green-50 border border-green-200 rounded-2xl p-6 mb-6 text-center">
+                    <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700 rounded-2xl p-6 mb-6 text-center">
                         <p className="text-3xl mb-2">✅</p>
-                        <p className="font-bold text-green-700">
+                        <p className="font-bold text-green-700 dark:text-green-300">
                             You have already reviewed this user!
                         </p>
                     </div>
                 )}
 
                 {/* Reviews List */}
-                <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
-                    <h3 className="text-lg font-bold text-gray-800 mb-4">
+                <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
+                    <h3 className="text-lg font-bold text-gray-800 dark:text-white mb-4">
                         Reviews ({feedbackList.length})
                     </h3>
 
                     {feedbackList.length === 0 && (
                         <div className="text-center py-8">
                             <p className="text-3xl mb-2">📝</p>
-                            <p className="text-gray-500">No reviews yet!</p>
+                            <p className="text-gray-500 dark:text-gray-400">No reviews yet!</p>
                         </div>
                     )}
 
@@ -222,7 +222,7 @@ function Feedback() {
                                         <div className="w-8 h-8 bg-blue-700 rounded-full flex items-center justify-center text-white font-bold text-sm">
                                             {feedback.reviewer_name[0].toUpperCase()}
                                         </div>
-                                        <span className="font-medium text-gray-800">
+                                        <span className="font-medium text-gray-800 dark:text-gray-100">
                                             {feedback.reviewer_name}
                                         </span>
                                     </div>
@@ -231,11 +231,11 @@ function Feedback() {
                                     </div>
                                 </div>
                                 {feedback.comment && (
-                                    <p className="text-gray-600 text-sm mt-2 ml-10">
+                                    <p className="text-gray-600 dark:text-gray-300 text-sm mt-2 ml-10">
                                         {feedback.comment}
                                     </p>
                                 )}
-                                <p className="text-xs text-gray-400 mt-2 ml-10">
+                                <p className="text-xs text-gray-400 dark:text-gray-500 mt-2 ml-10">
                                     {new Date(feedback.created_at).toLocaleDateString()}
                                 </p>
                             </div>
